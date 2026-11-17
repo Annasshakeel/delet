@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#080d18">
+  <meta name="description" content="NETVISION — interactive network operations monitoring simulator.">
+  <title>NETVISION | Network Operations Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="#" aria-label="NETVISION home">
+        <span class="brand-mark"><i></i><i></i><i></i><i></i></span>
+        <span><strong>NETVISION</strong><small>NETWORK INTELLIGENCE</small></span>
+      </a>
+      <div class="workspace-label">WORKSPACE</div>
+      <nav class="nav">
+        <a class="nav-link active" href="#overview"><span class="nav-icon">◫</span> Overview <span class="nav-dot"></span></a>
+        <a class="nav-link" href="#topology"><span class="nav-icon">⌘</span> Network topology</a>
+        <a class="nav-link" href="#devices"><span class="nav-icon">▦</span> Devices <span class="nav-count" id="deviceNavCount">8</span></a>
+        <a class="nav-link" href="#incidents"><span class="nav-icon">⚑</span> Incidents <span class="nav-count alert-count" id="incidentNavCount">2</span></a>
+        <a class="nav-link" href="#activity"><span class="nav-icon">◷</span> Activity log</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="system-card">
+          <div class="system-card-top"><span class="pulse"></span> SYSTEM STATUS</div>
+          <strong>All systems operational</strong>
+          <div class="uptime-line"><span></span></div>
+          <small>Last checked <span id="sidebarTime">just now</span></small>
+        </div>
+        <div class="profile">
+          <div class="avatar">AS</div>
+          <div><strong>Annas Shakeel</strong><small>Network Administrator</small></div>
+          <button class="icon-btn" title="Profile options" aria-label="Profile options">···</button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content" id="overview">
+      <header class="topbar">
+        <div class="mobile-brand"><span class="brand-mark"><i></i><i></i><i></i><i></i></span> NETVISION</div>
+        <button class="mobile-menu icon-btn" id="menuBtn" aria-label="Open menu">☰</button>
+        <div class="breadcrumb">Workspace <span>/</span> <b>Overview</b></div>
+        <div class="top-actions">
+          <div class="live-indicator"><span class="pulse"></span> LIVE SIMULATION</div>
+          <button class="icon-btn notification-btn" id="notificationBtn" aria-label="Show notifications">♧<span></span></button>
+          <div class="top-avatar">AS</div>
+        </div>
+      </header>
+
+      <section class="page-heading">
+        <div>
+          <div class="eyebrow">TUESDAY, <span id="dateLabel"></span> <span class="eyebrow-sep">/</span> NOC CONTROL CENTER</div>
+          <h1>Network overview<span class="heading-period">.</span></h1>
+          <p>Monitor infrastructure health, performance and incidents in real time.</p>
+        </div>
+        <div class="heading-actions">
+          <button class="btn btn-secondary" id="exportBtn"><span>↧</span> Export report</button>
+          <button class="btn btn-primary" id="scanBtn"><span>⌁</span> Run network scan</button>
+        </div>
+      </section>
+
+      <section class="metric-grid" aria-label="Network metrics">
+        <article class="metric-card">
+          <div class="metric-head"><span>NETWORK AVAILABILITY</span><span class="metric-symbol green">◉</span></div>
+          <div class="metric-value"><strong id="availability">99.98</strong><em>%</em><span class="trend positive">↗ 0.04%</span></div>
+          <div class="metric-foot"><span class="mini-bars" id="availabilityBars"></span><span>vs. last 24 hours</span></div>
+        </article>
+        <article class="metric-card">
+          <div class="metric-head"><span>CONNECTED DEVICES</span><span class="metric-symbol blue">▦</span></div>
+          <div class="metric-value"><strong id="connected">7</strong><em>/ 8</em><span class="trend positive">↗ 1.2%</span></div>
+          <div class="metric-foot"><span class="metric-caption"><i class="legend-dot green-dot"></i> 7 online <i class="legend-dot red-dot"></i> 1 offline</span></div>
+        </article>
+        <article class="metric-card">
+          <div class="metric-head"><span>AVERAGE LATENCY</span><span class="metric-symbol purple">⌁</span></div>
+          <div class="metric-value"><strong id="latency">24</strong><em>ms</em><span class="trend positive">↓ 3.8%</span></div>
+          <div class="metric-foot"><span class="sparkline" id="latencySpark"></span><span>last 60 minutes</span></div>
+        </article>
+        <article class="metric-card">
+          <div class="metric-head"><span>ACTIVE INCIDENTS</span><span class="metric-symbol orange">⚑</span></div>
+          <div class="metric-value"><strong id="activeIncidents">2</strong><em>open</em><span class="trend negative">↑ 1 new</span></div>
+          <div class="metric-foot"><span class="metric-caption"><i class="legend-dot red-dot"></i> 1 critical <i class="legend-dot orange-dot"></i> 1 warning</span></div>
+        </article>
+      </section>
+
+      <section class="content-grid">
+        <article class="panel traffic-panel">
+          <div class="panel-heading">
+            <div><div class="panel-kicker">BANDWIDTH ANALYTICS</div><h2>Network traffic</h2><p>Inbound and outbound throughput</p></div>
+            <div class="chart-controls">
+              <span class="chart-legend"><i class="legend-dot cyan-dot"></i> Inbound <i class="legend-dot purple-dot"></i> Outbound</span>
+              <select id="rangeSelect" aria-label="Traffic time range"><option value="24">Last 24 hours</option><option value="12">Last 12 hours</option><option value="6">Last 6 hours</option></select>
+            </div>
+          </div>
+          <div class="chart-summary"><strong id="currentTraffic">842 <small>Mbps</small></strong><span class="trend positive">↗ 12.6%</span><small>peak throughput today</small></div>
+          <div class="chart-wrap"><canvas id="trafficChart" aria-label="Network traffic chart" role="img"></canvas><div class="chart-y-labels"><span>1.2 Gbps</span><span>900 Mbps</span><span>600 Mbps</span><span>300 Mbps</span><span>0 Mbps</span></div></div>
+          <div class="chart-x-labels" id="chartLabels"><span>00:00</span><span>04:00</span><span>08:00</span><span>12:00</span><span>16:00</span><span>20:00</span><span>24:00</span></div>
+        </article>
+
+        <article class="panel health-panel">
+          <div class="panel-heading"><div><div class="panel-kicker">INFRASTRUCTURE</div><h2>Network health</h2><p>Overall infrastructure score</p></div><button class="more-btn" aria-label="More options">···</button></div>
+          <div class="health-score"><div class="score-ring"><div><strong>96</strong><small>/ 100</small></div></div><div class="health-copy"><strong>Excellent</strong><span>Network is performing<br>within expected limits.</span></div></div>
+          <div class="health-breakdown">
+            <div><span>Availability</span><b>99.98%</b><i><u style="width:99.98%"></u></i></div>
+            <div><span>Performance</span><b>94.2%</b><i><u style="width:94.2%"></u></i></div>
+            <div><span>Security posture</span><b>93.0%</b><i><u style="width:93%"></u></i></div>
+          </div>
+          <div class="health-note"><span>✦</span> No major degradation detected</div>
+        </article>
+      </section>
+
+      <section class="content-grid lower-grid">
+        <article class="panel topology-panel" id="topology">
+          <div class="panel-heading"><div><div class="panel-kicker">NETWORK MAP</div><h2>Topology overview</h2><p>Logical view of connected infrastructure</p></div><button class="text-btn" id="focusTopology">View details ↗</button></div>
+          <div class="topology-map">
+            <svg class="connection-lines" viewBox="0 0 700 240" preserveAspectRatio="none" aria-hidden="true">
+              <path d="M350 36 L350 85 M350 85 L130 145 M350 85 L350 145 M350 85 L570 145 M130 145 L70 205 M130 145 L190 205 M350 145 L290 205 M350 145 L410 205 M570 145 L510 205 M570 145 L630 205"/>
+              <path class="line-dash" d="M350 36 L350 85 M350 85 L130 145 M350 85 L350 145 M350 85 L570 145"/>
+            </svg>
+            <div class="topo-node core-node" data-device="gw-01"><span class="node-icon">◇</span><b>CORE ROUTER</b><small>GW-01 · 10.0.0.1</small><i class="node-status"></i></div>
+            <div class="topo-node switch-node node-a" data-device="sw-01"><span class="node-icon">▤</span><b>SWITCH 01</b><small>10.0.1.2</small><i class="node-status"></i></div>
+            <div class="topo-node switch-node node-b" data-device="sw-02"><span class="node-icon">▤</span><b>SWITCH 02</b><small>10.0.1.3</small><i class="node-status"></i></div>
+            <div class="topo-node switch-node node-c" data-device="fw-01"><span class="node-icon">⬡</span><b>FIREWALL</b><small>10.0.0.254</small><i class="node-status"></i></div>
+            <div class="topo-node edge-node edge-a" data-device="ap-01"><span class="node-icon">⌁</span><b>ACCESS POINT</b><small>10.0.2.10</small><i class="node-status"></i></div>
+            <div class="topo-node edge-node edge-b" data-device="srv-01"><span class="node-icon">▥</span><b>SERVER 01</b><small>10.0.3.10</small><i class="node-status"></i></div>
+            <div class="topo-node edge-node edge-c" data-device="ap-02"><span class="node-icon">⌁</span><b>ACCESS POINT</b><small>10.0.2.11</small><i class="node-status"></i></div>
+            <div class="topo-node edge-node edge-d" data-device="srv-02"><span class="node-icon">▥</span><b>SERVER 02</b><small>10.0.3.11</small><i class="node-status"></i></div>
+            <div class="topo-node edge-node edge-e" data-device="db-01"><span class="node-icon">▣</span><b>DATABASE</b><small>10.0.4.10</small><i class="node-status"></i></div>
+            <div class="topo-node edge-node edge-f" data-device="nas-01"><span class="node-icon">▧</span><b>STORAGE</b><small>10.0.4.20</small><i class="node-status"></i></div>
+          </div>
+          <div class="topology-legend"><span><i class="legend-dot green-dot"></i> Operational</span><span><i class="legend-dot orange-dot"></i> Warning</span><span><i class="legend-dot red-dot"></i> Offline</span><small>SELECT A NODE FOR DEVICE DETAILS</small></div>
+        </article>
+
+        <article class="panel incidents-panel" id="incidents">
+          <div class="panel-heading"><div><div class="panel-kicker">ATTENTION REQUIRED</div><h2>Recent incidents</h2><p>Events requiring administrator review</p></div><button class="text-btn" id="allIncidentsBtn">View all ↗</button></div>
+          <div class="incident-list" id="incidentList">
+            <div class="incident-item"><span class="incident-icon critical">!</span><div class="incident-info"><strong>Device unreachable</strong><span>AP-02 · 10.0.2.11</span><small>12 minutes ago</small></div><span class="severity critical-text">CRITICAL</span></div>
+            <div class="incident-item"><span class="incident-icon warning">⌁</span><div class="incident-info"><strong>High CPU utilization</strong><span>SW-02 · 10.0.1.3</span><small>38 minutes ago</small></div><span class="severity warning-text">WARNING</span></div>
+          </div>
+          <div class="incident-footer"><span class="pulse orange-pulse"></span> Monitoring for new events <span class="spacer"></span><button id="ackAllBtn">Acknowledge all</button></div>
+        </article>
+      </section>
+
+      <section class="panel devices-panel" id="devices">
+        <div class="panel-heading devices-heading"><div><div class="panel-kicker">INVENTORY & STATUS</div><h2>Monitored devices</h2><p>Infrastructure assets and live simulated health</p></div><div class="device-actions"><div class="search-box"><span>⌕</span><input id="deviceSearch" type="search" placeholder="Search devices..." aria-label="Search devices"></div><select id="statusFilter" aria-label="Filter device status"><option value="all">All devices</option><option value="online">Online</option><option value="warning">Warning</option><option value="offline">Offline</option></select></div></div>
+        <div class="table-scroll"><table><thead><tr><th>DEVICE</th><th>IP ADDRESS</th><th>TYPE</th><th>LATENCY</th><th>CPU LOAD</th><th>STATUS</th><th></th></tr></thead><tbody id="deviceTable"></tbody></table></div>
+        <div class="table-footer"><span id="deviceResultCount">Showing 8 devices</span><span>Auto-refresh <i class="pulse"></i> ON</span></div>
+      </section>
+
+      <section class="panel activity-panel" id="activity">
+        <div class="panel-heading"><div><div class="panel-kicker">AUDIT TRAIL</div><h2>System activity</h2><p>Latest monitoring and administrator events</p></div><button class="text-btn" id="clearActivityBtn">Clear log</button></div>
+        <div class="activity-list" id="activityList"></div>
+      </section>
+      <footer class="footer"><span>© 2025 NETVISION MONITORING SUITE</span><span>DESIGNED & DEVELOPED BY <b>ANNAS SHAKEEL</b></span><span><i class="pulse"></i> SIMULATION MODE</span></footer>
+    </main>
+  </div>
+
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+  <div class="modal-backdrop" id="deviceModal" aria-hidden="true">
+    <div class="modal">
+      <div class="modal-head"><div><div class="panel-kicker">DEVICE INSPECTOR</div><h2 id="modalDeviceName">Device details</h2></div><button class="icon-btn" id="closeModal" aria-label="Close">×</button></div>
+      <div id="modalBody"></div>
+      <div class="modal-actions"><button class="btn btn-secondary" id="modalPing">Run ping test</button><button class="btn btn-primary" id="modalCloseBtn">Done</button></div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
